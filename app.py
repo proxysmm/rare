@@ -6,7 +6,6 @@ from pymongo import MongoClient
 app = Flask(__name__)
 CORS(app)
 
-
 # =========================================================================
 # 🔴 MONGODB LIFETIME DATA ENGINE (Data amar rakhne ke liye) 🔴
 MONGO_URI = "mongodb+srv://USERNAME:PASSWORD@cluster0.mongodb.net/?retryWrites=true&w=majority"
@@ -47,11 +46,11 @@ def load_db():
             if "panels" not in data:
                 data["panels"] = {
                     "1": {"name": "P1", "color": "#00f3ff", "url": "https://xmediasmm.in/api/v2", "key": "52bf994ea9b8fd9c173ace0f0080285e", "bot": "8291687285:AAFDWBGzzaKtQsoGa5ipaYt-dYCpUs7W2aU", "chat": "7044754988"},
-                    "2": {"name": "P2", "color": "#ff1493", "url": "https://wsmmpanel.com/api/v2", "key": "7f0f12090f3b89cc9950d0ef758323e8", "bot": "8611984647:AAEvQQy_Vcz9P3s2Zj0Zq7fn2sMxryk1nuA", "chat": "7044754988"}
+                    "2": {"name": "P2", "color": "#ff1493", "url": "https://wowsmmpanel.com/api/v2", "key": "7f0f12090f3b89cc9950d0ef758323e8", "bot": "8611984647:AAEvQQy_Vcz9P3s2Zj0Zq7fn2sMxryk1nuA", "chat": "7044754988"}
                 }
             else:
                 if "2" in data["panels"]:
-                    data["panels"]["2"]["url"] = "https://wsmmpanel.com/api/v2"
+                    data["panels"]["2"]["url"] = "https://wowsmmpanel.com/api/v2"
                     data["panels"]["2"]["key"] = "7f0f12090f3b89cc9950d0ef758323e8"
 
             if "coupons" not in data: data["coupons"] = {}
@@ -88,7 +87,7 @@ def load_db():
             
     default_panels = {
         "1": {"name": "P1", "color": "#00f3ff", "url": "https://xmediasmm.in/api/v2", "key": "52bf994ea9b8fd9c173ace0f0080285e", "bot": "8291687285:AAFDWBGzzaKtQsoGa5ipaYt-dYCpUs7W2aU", "chat": "7044754988"},
-        "2": {"name": "P2", "color": "#ff1493", "url": "https://wsmmpanel.com/api/v2", "key": "7f0f12090f3b89cc9950d0ef758323e8", "bot": "8611984647:AAEvQQy_Vcz9P3s2Zj0Zq7fn2sMxryk1nuA", "chat": "7044754988"}
+        "2": {"name": "P2", "color": "#ff1493", "url": "https://wowsmmpanel.com/api/v2", "key": "7f0f12090f3b89cc9950d0ef758323e8", "bot": "8611984647:AAEvQQy_Vcz9P3s2Zj0Zq7fn2sMxryk1nuA", "chat": "7044754988"}
     }
     return {
         "panels": default_panels, "users": {"1": {}, "2": {}}, "balances": {"1": {}, "2": {}}, 
@@ -122,7 +121,7 @@ def save_db():
 def keep_awake():
     while True:
         time.sleep(120)
-        try: requests.get("https://malik-proxy-smm.onrender.com/api/ping", timeout=5)
+        try: requests.get("https://vip-bt5m.onrender.com/api/ping", timeout=5)
         except: pass
 threading.Thread(target=keep_awake, daemon=True).start()
 
@@ -988,5 +987,4 @@ def smm_api():
         return jsonify({"error": "Incorrect action"}), 400
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=8000)
