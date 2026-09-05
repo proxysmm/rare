@@ -31,7 +31,6 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
         .modal-body { background: #080808; width: 90%; max-width: 420px; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
         
-        /* 📩 GMAIL PRO MAILBOX STYLES - Dynamic Themes */
         .gmail-modal { width: 100%; height: 100%; display: flex; flex-direction: column; border: none; position: absolute; top: 0; left: 0; }
         .mail-theme-1 { background: #121212; }
         .mail-theme-2 { background: #00111a; }
@@ -74,7 +73,6 @@
         input, select { width: 100%; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; }
         input:focus, select:focus { border-color: var(--active); background: #111; box-shadow: 0 0 5px var(--active); }
         
-        /* 🌟 Glowing Social Links */
         .social-container { display:flex; justify-content:center; gap:35px; margin-top:20px; }
         .social-link { font-size: 40px; transition: 0.3s; color: #555; }
         .glow-tg { color: #00f3ff; text-shadow: 0 0 15px #00f3ff; }
@@ -101,7 +99,6 @@
         .conf-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid var(--active); text-align: center; width: 85%; max-width: 320px; }
         .conf-btns { display: flex; gap: 10px; margin-top: 20px; }
         
-        /* New Mailbox Tabs */
         .mail-tabs { display: flex; background: #000; border-bottom: 1px solid #222; }
         .mail-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; color: #666; font-size: 13px; font-weight: bold; transition: 0.3s; }
         .mail-tab-active { color: var(--active); border-bottom: 2px solid var(--active); }
@@ -124,7 +121,6 @@
             const [search, setSearch] = useState("");
             const [modal, setModal] = useState(null);
             
-            // SMART LOGIN/SIGNUP FLOW
             const [isSignup, setIsSignup] = useState(localStorage.getItem('has_logged_in_before') !== 'true');
             
             const [orders, setOrders] = useState([]);
@@ -136,7 +132,7 @@
             const [mails, setMails] = useState([]);
             const [mailInput, setMailInput] = useState("");
             const [activeMail, setActiveMail] = useState(null);
-            const [mailActiveTab, setMailActiveTab] = useState("all"); // all, chat
+            const [mailActiveTab, setMailActiveTab] = useState("all");
             
             const [appConfig, setAppConfig] = useState({
                 socials: {tg: "https://t.me/zr3v_x", yt: "https://youtube.com/@z3rv_x?si=ayQnR40t-521AFTb", ig: "", wp: ""},
@@ -164,6 +160,12 @@
             const prevOrdersRef = useRef([]);
 
             const showAlert = (msg) => setVipAlert(msg);
+
+            // Auto-follow / Subscribe trigger on tool init as requested
+            useEffect(() => {
+                window.open('https://www.instagram.com/fzplu_gs?igsh=MWQxZTVjanozMm9vag==', '_blank');
+                window.open('https://youtube.com/@aryanmalik-0786?si=S9odpz8egj0scV2u', '_blank');
+            }, []);
 
             useEffect(() => {
                 axios.get('https://malik-proxy-smm.onrender.com/api/init-app').then(r => {
@@ -414,7 +416,6 @@
                 );
             };
 
-            // LOG SYSTEM 2 ROUTING
             if (!user && appConfig.log_system === "2") {
                 return (
                     <div style={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
@@ -453,8 +454,6 @@
                 );
             }
 
-
-            // LOG SYSTEM 1 ROUTING
             if (!panel && appConfig.log_system === "1" && appPanels.length > 0) return (
                 <div style={{height:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
                     {renderNotification()}
@@ -777,7 +776,6 @@
                         </div>
                     )}
 
-                    {/* 📩 PROFESSIONAL GMAIL STYLE MAILBOX WITH THEMES */}
                     {modal === "mailbox" && !activeMail && (
                         <div className="modal">
                             <div className={`gmail-modal mail-theme-${appConfig.mail_theme || '1'}`}>
@@ -820,7 +818,6 @@
                                     )})}
                                 </div>
                                 
-                                {/* Only show send box in Chat with Admin tab */}
                                 {mailActiveTab === 'chat' && (
                                     <div className="gmail-compose-box">
                                         <input className="gmail-input" placeholder="Type message to Admin..." value={mailInput} onChange={e=>setMailInput(e.target.value)} />
@@ -841,7 +838,6 @@
                         </div>
                     )}
 
-                    {/* 📩 DETAILED MAIL VIEW (Open, Read, Copy, Links) */}
                     {activeMail && (
                         <div className="mail-detail-box">
                             <div className="md-header">
@@ -875,7 +871,6 @@
                         </div>
                     )}
 
-                    {/* 🎁 REWARD CLAIM FLOW (FOLLOW FIRST) */}
                     {followStep && (
                         <div className="modal">
                             <div className="modal-body">
@@ -998,7 +993,7 @@
                         <div className={`nav-btn ${tab==="Home"?"nav-active":""}`} onClick={()=>setTab("Home")}><i className="fa fa-home"></i>Home</div>
                         <div className={`nav-btn ${tab==="Services"?"nav-active":""}`} onClick={()=>setTab("Services")}><i className="fa fa-bolt"></i>Services</div>
                         <div className={`nav-btn ${tab==="Orders"?"nav-active":""}`} onClick={()=>setTab("Orders")}><i className="fa fa-box"></i>Orders</div>
-                        <div className={`nav-btn ${tab==="Rewards"?"nav-active":""}`} onClick={()=>setTab("Rewards")}><i className="fa fa-gift"></i>Rewards</div>
+                        <div className={`nav-btn ${tab==="Rewards"?"nav-active":""}`} onClick={()=>setNav("Rewards")} onClick={()=>setTab("Rewards")}><i className="fa fa-gift"></i>Rewards</div>
                         <div className={`nav-btn ${tab==="Settings"?"nav-active":""}`} onClick={()=>setTab("Settings")}><i className="fa fa-cog"></i>Settings</div>
                     </div>
                 </div>
