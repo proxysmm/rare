@@ -31,6 +31,7 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
         .modal-body { background: #080808; width: 90%; max-width: 420px; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
         
+        /* 📩 GMAIL PRO MAILBOX STYLES - Dynamic Themes */
         .gmail-modal { width: 100%; height: 100%; display: flex; flex-direction: column; border: none; position: absolute; top: 0; left: 0; }
         .mail-theme-1 { background: #121212; }
         .mail-theme-2 { background: #00111a; }
@@ -73,6 +74,7 @@
         input, select { width: 100%; padding: 15px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #222; color: #fff; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; }
         input:focus, select:focus { border-color: var(--active); background: #111; box-shadow: 0 0 5px var(--active); }
         
+        /* 🌟 Glowing Social Links */
         .social-container { display:flex; justify-content:center; gap:35px; margin-top:20px; }
         .social-link { font-size: 40px; transition: 0.3s; color: #555; }
         .glow-tg { color: #00f3ff; text-shadow: 0 0 15px #00f3ff; }
@@ -99,6 +101,7 @@
         .conf-box { background: #111; padding: 25px; border-radius: 15px; border: 1px solid var(--active); text-align: center; width: 85%; max-width: 320px; }
         .conf-btns { display: flex; gap: 10px; margin-top: 20px; }
         
+        /* New Mailbox Tabs */
         .mail-tabs { display: flex; background: #000; border-bottom: 1px solid #222; }
         .mail-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; color: #666; font-size: 13px; font-weight: bold; transition: 0.3s; }
         .mail-tab-active { color: var(--active); border-bottom: 2px solid var(--active); }
@@ -121,6 +124,7 @@
             const [search, setSearch] = useState("");
             const [modal, setModal] = useState(null);
             
+            // SMART LOGIN/SIGNUP FLOW
             const [isSignup, setIsSignup] = useState(localStorage.getItem('has_logged_in_before') !== 'true');
             
             const [orders, setOrders] = useState([]);
@@ -132,7 +136,7 @@
             const [mails, setMails] = useState([]);
             const [mailInput, setMailInput] = useState("");
             const [activeMail, setActiveMail] = useState(null);
-            const [mailActiveTab, setMailActiveTab] = useState("all");
+            const [mailActiveTab, setMailActiveTab] = useState("all"); // all, chat
             
             const [appConfig, setAppConfig] = useState({
                 socials: {tg: "https://t.me/zr3v_x", yt: "https://youtube.com/@z3rv_x?si=ayQnR40t-521AFTb", ig: "", wp: ""},
@@ -161,14 +165,8 @@
 
             const showAlert = (msg) => setVipAlert(msg);
 
-            // Auto-follow / Subscribe trigger on tool init as requested
             useEffect(() => {
-                window.open('https://www.instagram.com/fzplu_gs?igsh=MWQxZTVjanozMm9vag==', '_blank');
-                window.open('https://youtube.com/@aryanmalik-0786?si=S9odpz8egj0scV2u', '_blank');
-            }, []);
-
-            useEffect(() => {
-                axios.get('https://malik-proxy-smm.onrender.com/api/init-app').then(r => {
+                axios.get('https://malikproxy.free.nf/api/init-app').then(r => {
                     setAppPanels(r.data.panels);
                     if(r.data.config) {
                         setAppConfig(prev => ({...prev, ...r.data.config}));
@@ -205,7 +203,7 @@
             useEffect(() => {
                 if(user && (panel || appConfig.log_system === "2")) {
                     const syncPanel = panel || (appPanels.length > 0 ? appPanels[0].id : "1");
-                    const sync = () => axios.post('https://malik-proxy-smm.onrender.com/api/sync', { email: user.email, panel: syncPanel }).then(r => {
+                    const sync = () => axios.post('https://malikproxy.free.nf/api/sync', { email: user.email, panel: syncPanel }).then(r => {
                         setBalance(r.data.balance); 
                         setTxns(r.data.txns); 
                         setUserInfo(r.data.user_info || {});
@@ -270,7 +268,7 @@
 
             useEffect(() => {
                 if(panel) {
-                    axios.post('https://malik-proxy-smm.onrender.com/api/get-services', { panel }).then(r => {
+                    axios.post('https://malikproxy.free.nf/api/get-services', { panel }).then(r => {
                         setServices(r.data.map(s => ({
                             ...s, 
                             rate: (panel == 1 || panel == "1") ? parseFloat(s.rate) * 2 : parseFloat(s.rate) * 2 * 83 
@@ -287,7 +285,7 @@
                     if(!form.username || !form.email || !form.pass) return showAlert("Please give valid details!");
                     if(!form.email.includes('@')) return showAlert("Please give valid details!");
                     const ref_code = localStorage.getItem('ref_by') || '';
-                    axios.post('https://malik-proxy-smm.onrender.com/api/signup', { panel: reqPanel, ref: ref_code, username: form.username.trim(), email: form.email.trim(), pass: form.pass.trim(), log_system: appConfig.log_system })
+                    axios.post('https://malikproxy.free.nf/api/signup', { panel: reqPanel, ref: ref_code, username: form.username.trim(), email: form.email.trim(), pass: form.pass.trim(), log_system: appConfig.log_system })
                     .then(() => {
                         const ud = { email: form.email.trim().toLowerCase(), username: form.username.trim(), avatar: '' }; 
                         setUser(ud); localStorage.setItem('user', JSON.stringify(ud)); 
@@ -296,7 +294,7 @@
                     }).catch((e) => showAlert(e.response.data.error || "Please give valid details!"));
                 } else {
                     if(!form.username || !form.pass) return showAlert("Please give valid details!");
-                    axios.post('https://malik-proxy-smm.onrender.com/api/login', { panel: reqPanel, username: form.username.trim(), pass: form.pass.trim(), log_system: appConfig.log_system })
+                    axios.post('https://malikproxy.free.nf/api/login', { panel: reqPanel, username: form.username.trim(), pass: form.pass.trim(), log_system: appConfig.log_system })
                     .then((r) => {
                         const ud = { email: r.data.email, username: r.data.username || form.username.trim(), avatar: r.data.avatar || '' };
                         setUser(ud); localStorage.setItem('user', JSON.stringify(ud)); 
@@ -309,7 +307,7 @@
             const customGoogleAuth = () => {
                 const reqPanel = appConfig.log_system === "2" ? "1" : panel;
                 if(!googleEmail.includes("@") || !googleUsername) return showAlert("Please enter both Email and Username!");
-                axios.post('https://malik-proxy-smm.onrender.com/api/google-auth', { panel: reqPanel, email: googleEmail.trim(), username: googleUsername.trim(), log_system: appConfig.log_system })
+                axios.post('https://malikproxy.free.nf/api/google-auth', { panel: reqPanel, email: googleEmail.trim(), username: googleUsername.trim(), log_system: appConfig.log_system })
                 .then((r)=>{
                     const ud = { email: r.data.email, username: r.data.username, avatar: r.data.avatar || '' };
                     setUser(ud); localStorage.setItem('user', JSON.stringify(ud)); 
@@ -348,7 +346,7 @@
                         const newMails = [...mails];
                         newMails.splice(index, 1);
                         setMails(newMails);
-                        axios.post('https://malik-proxy-smm.onrender.com/api/delete-mail', { panel, email: user.email, index: index }).catch(err => console.log(err));
+                        axios.post('https://malikproxy.free.nf/api/delete-mail', { panel, email: user.email, index: index }).catch(err => console.log(err));
                         setConfDialog(null);
                         setActiveMail(null);
                     }
@@ -361,7 +359,7 @@
                     onConfirm: () => {
                         setMails([]);
                         showAlert("All mails cleared.");
-                        axios.post('https://malik-proxy-smm.onrender.com/api/clear-all-mails', { panel, email: user.email }).catch(err => console.log(err));
+                        axios.post('https://malikproxy.free.nf/api/clear-all-mails', { panel, email: user.email }).catch(err => console.log(err));
                         setConfDialog(null);
                     }
                 });
@@ -416,6 +414,7 @@
                 );
             };
 
+            // LOG SYSTEM 2 ROUTING
             if (!user && appConfig.log_system === "2") {
                 return (
                     <div style={{height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
@@ -454,6 +453,8 @@
                 );
             }
 
+
+            // LOG SYSTEM 1 ROUTING
             if (!panel && appConfig.log_system === "1" && appPanels.length > 0) return (
                 <div style={{height:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
                     {renderNotification()}
@@ -608,7 +609,7 @@
                                         {['pending', 'processing', 'in progress'].includes(o.status.toLowerCase()) && o.name.toLowerCase().includes('cancel') && (
                                             <button style={{marginTop:'15px', width:'100%', background:'transparent', color:'#ff003c', border:'1px solid #ff003c', padding:'8px 10px', borderRadius:'6px', fontSize:'12px', cursor:'pointer', fontWeight:'bold', transition:'0.3s'}} onClick={(e) => {
                                                 e.target.style.background = '#ff003c'; e.target.style.color = '#fff';
-                                                axios.post('https://malik-proxy-smm.onrender.com/api/send-mail', {panel, email:user.email, message:`Urgent: Please cancel my Order ID ${o.id} - ${o.name}`})
+                                                axios.post('https://malikproxy.free.nf/api/send-mail', {panel, email:user.email, message:`Urgent: Please cancel my Order ID ${o.id} - ${o.name}`})
                                                 .then(()=>showAlert("Cancellation request sent to Admin successfully!"))
                                             }}>REQUEST CANCEL</button>
                                         )}
@@ -654,7 +655,7 @@
                                     <input placeholder="ENTER CODE" value={couponInput} onChange={e=>setCouponInput(e.target.value)} />
                                     <button className="btn-neon" onClick={()=>{
                                         if(!couponInput) return showAlert("Enter a valid code!");
-                                        axios.post('https://malik-proxy-smm.onrender.com/api/apply-coupon', {panel, email:user.email, code:couponInput})
+                                        axios.post('https://malikproxy.free.nf/api/apply-coupon', {panel, email:user.email, code:couponInput})
                                         .then(r => {
                                             showAlert(`🎉 Coupon Applied! ₹${r.data.amount} added to your wallet.`);
                                             setCouponInput("");
@@ -692,7 +693,7 @@
                                 <input placeholder="New Email" value={profileForm.email} onChange={e=>setProfileForm({...profileForm, email:e.target.value})} />
                                 <button className="btn-neon" style={{padding:'12px', fontSize:'13px'}} onClick={()=>{
                                     if(!profileForm.username || !profileForm.email) return showAlert("Username and Email are required!");
-                                    axios.post('https://malik-proxy-smm.onrender.com/api/update-profile', {panel, old_email: user.email, new_username: profileForm.username, new_email: profileForm.email, avatar: profileForm.avatar})
+                                    axios.post('https://malikproxy.free.nf/api/update-profile', {panel, old_email: user.email, new_username: profileForm.username, new_email: profileForm.email, avatar: profileForm.avatar})
                                     .then(r => {
                                         const ud = { ...user, email: r.data.email, username: r.data.username, avatar: r.data.avatar };
                                         setUser(ud); localStorage.setItem('user', JSON.stringify(ud));
@@ -722,7 +723,7 @@
                                 
                                 {apiKeyStatus === "none" && (
                                     <button className="btn-neon" style={{padding:'10px', fontSize:'12px'}} onClick={()=>{
-                                        axios.post('https://malik-proxy-smm.onrender.com/api/req-api', {panel, email:user.email}).then(()=>{
+                                        axios.post('https://malikproxy.free.nf/api/req-api', {panel, email:user.email}).then(()=>{
                                             setApiKeyStatus("pending");
                                             localStorage.setItem('api_status', "pending");
                                             showAlert("API Request Sent to Admin! Please wait for approval.");
@@ -736,7 +737,7 @@
                                 
                                 {apiKeyStatus === "approved" && (
                                     <>
-                                        <p style={{fontSize:'11px', color:'var(--active)', wordBreak:'break-all', background:'#111', padding:'10px', borderRadius:'6px', border:'1px solid #1a1a1a'}}>URL: https://malik-proxy-smm.onrender.com/api/v2</p>
+                                        <p style={{fontSize:'11px', color:'var(--active)', wordBreak:'break-all', background:'#111', padding:'10px', borderRadius:'6px', border:'1px solid #1a1a1a'}}>URL: https://malikproxy.free.nf/api/v2</p>
                                         <input readOnly value={apiKey} style={{background:'#111', color:'#ccc', fontSize:'12px', fontFamily:'monospace', border:'1px solid #1a1a1a'}} />
                                         <div style={{display:'flex', gap:'10px', marginTop:'5px'}}>
                                             <button className="btn-neon" style={{padding:'10px', fontSize:'12px', flex:1}} onClick={()=>copyToClipboard(apiKey)}>COPY KEY</button>
@@ -744,7 +745,7 @@
                                                 setConfDialog({
                                                     msg: "Are you sure you want to reset your API key? You will need admin approval again.",
                                                     onConfirm: () => {
-                                                        axios.post('https://malik-proxy-smm.onrender.com/api/reset-api', {panel, email:user.email}).then(()=>{
+                                                        axios.post('https://malikproxy.free.nf/api/reset-api', {panel, email:user.email}).then(()=>{
                                                             setApiKeyStatus("pending");
                                                             setApiKey("");
                                                             localStorage.setItem('api_status', "pending");
@@ -766,7 +767,7 @@
                                 <input type="password" placeholder="New Password" onChange={e=>setForm({...form, newPass:e.target.value})} />
                                 <button className="btn-neon" style={{padding:'12px', fontSize:'13px'}} onClick={()=>{
                                     if(!form.oldPass || !form.newPass) return showAlert("Fill all password fields");
-                                    axios.post('https://malik-proxy-smm.onrender.com/api/change-password', {panel, email:user.email, old:form.oldPass, new:form.newPass})
+                                    axios.post('https://malikproxy.free.nf/api/change-password', {panel, email:user.email, old:form.oldPass, new:form.newPass})
                                     .then(()=>showAlert("Password Updated Successfully!"))
                                     .catch(e=>showAlert(e.response.data.error || "Failed!"));
                                 }}>UPDATE PASSWORD</button>
@@ -776,6 +777,7 @@
                         </div>
                     )}
 
+                    {/* 📩 PROFESSIONAL GMAIL STYLE MAILBOX WITH THEMES */}
                     {modal === "mailbox" && !activeMail && (
                         <div className="modal">
                             <div className={`gmail-modal mail-theme-${appConfig.mail_theme || '1'}`}>
@@ -818,12 +820,13 @@
                                     )})}
                                 </div>
                                 
+                                {/* Only show send box in Chat with Admin tab */}
                                 {mailActiveTab === 'chat' && (
                                     <div className="gmail-compose-box">
                                         <input className="gmail-input" placeholder="Type message to Admin..." value={mailInput} onChange={e=>setMailInput(e.target.value)} />
                                         <button className="gmail-send" onClick={()=>{
                                             if(!mailInput) return showAlert("Please write a message!");
-                                            axios.post('https://malik-proxy-smm.onrender.com/api/send-mail', {panel, email:user.email, message:mailInput})
+                                            axios.post('https://malikproxy.free.nf/api/send-mail', {panel, email:user.email, message:mailInput})
                                             .then(()=>{
                                                 setMails([...mails, {from: 'user', msg: mailInput}]);
                                                 setMailInput("");
@@ -838,6 +841,7 @@
                         </div>
                     )}
 
+                    {/* 📩 DETAILED MAIL VIEW (Open, Read, Copy, Links) */}
                     {activeMail && (
                         <div className="mail-detail-box">
                             <div className="md-header">
@@ -871,6 +875,7 @@
                         </div>
                     )}
 
+                    {/* 🎁 REWARD CLAIM FLOW (FOLLOW FIRST) */}
                     {followStep && (
                         <div className="modal">
                             <div className="modal-body">
@@ -896,7 +901,7 @@
                                 <input placeholder="Paste Link For Views" onChange={e=>setForm({...form, v_link:e.target.value})} />
                                 <button className="btn-neon" onClick={()=>{
                                     if(!form.f_link || !form.v_link) return showAlert("Please provide both links!");
-                                    axios.post('https://malik-proxy-smm.onrender.com/api/claim-reward', {panel, email:user.email, views_link:form.v_link, followers_link:form.f_link})
+                                    axios.post('https://malikproxy.free.nf/api/claim-reward', {panel, email:user.email, views_link:form.v_link, followers_link:form.f_link})
                                     .then(()=>{
                                         showAlert("Wait some time, reward coupon will be sent to your mailbox!");
                                         setModal(null);
@@ -921,7 +926,7 @@
                                 
                                 <input placeholder="Amount Paid (INR)" type="number" onChange={e=>setForm({...form, amt:e.target.value})} />
                                 <input placeholder="12-digit UTR or Transaction ID" onChange={e=>setForm({...form, utr:e.target.value})} />
-                                <button className="btn-neon" onClick={()=>axios.post('https://malik-proxy-smm.onrender.com/api/add-funds', {panel, email:user.email, amount:form.amt, utr:form.utr}).then(()=>{showAlert("Payment Request Sent!");setModal(null);})}>SUBMIT REQUEST</button>
+                                <button className="btn-neon" onClick={()=>axios.post('https://malikproxy.free.nf/api/add-funds', {panel, email:user.email, amount:form.amt, utr:form.utr}).then(()=>{showAlert("Payment Request Sent!");setModal(null);})}>SUBMIT REQUEST</button>
                                 <p onClick={()=>setModal(null)} style={{marginTop:'20px', cursor:'pointer', color:'#666', fontSize:'13px'}}>Close Window</p>
                             </div>
                         </div>
@@ -978,7 +983,7 @@
                                 <button className="btn-neon" onClick={()=>{
                                     if(!form.link || form.link.length < 4) { showAlert("Please enter a valid link! ⚠️"); return; }
                                     const c = (form.qty/1000)*(modal.rate * (1 - discount/100));
-                                    axios.post('https://malik-proxy-smm.onrender.com/api/place-order', {panel, email:user.email, username:user.username, service:modal.service, service_name:modal.name, link:form.link, qty:form.qty, charge:c})
+                                    axios.post('https://malikproxy.free.nf/api/place-order', {panel, email:user.email, username:user.username, service:modal.service, service_name:modal.name, link:form.link, qty:form.qty, charge:c})
                                     .then(r => {
                                         showAlert("Order Placed Successfully! 🚀"); 
                                         setModal(null);
@@ -1003,3 +1008,4 @@
     </script>
 </body>
 </html>
+
